@@ -1,15 +1,10 @@
-import { useState } from "react";
 import Post from "./Post";
 import styles from "./PostList.module.css";
-import NewPost from "./NewPost";
-import Modal from "../Modal";
+import { useLoaderData } from "react-router-dom";
 
-function PostList({ isPosting, onStopPosting }) {
-  const [posts, setPosts] = useState([]);
+function PostList() {
+  const posts = useLoaderData();
 
-  function addPostHandler(postData) {
-    setPosts((existingPosts) => [postData, ...existingPosts]);
-  }
   // let modalContent = (
   // if (modalIsVisible) {
   // <Modal onClose={onStopPosting}>
@@ -20,15 +15,15 @@ function PostList({ isPosting, onStopPosting }) {
 
   return (
     <>
-      {isPosting && (
-        <Modal onClose={onStopPosting}>
-          <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
-        </Modal>
-      )}
       {posts.length > 0 && (
         <ul className={styles.posts}>
           {posts.map((post, idx) => (
-            <Post key={idx} author={post.author} body={post.body} />
+            <Post
+              key={post.id}
+              id={post.id}
+              author={post.author}
+              body={post.body}
+            />
           ))}
         </ul>
       )}
